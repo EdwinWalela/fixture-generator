@@ -9,7 +9,7 @@ int main(){
     Util util;
 
     util.readFile("input.csv");
-    util.writeFile("output.csv");
+    util.printTeams();
     
     return 0;
 }
