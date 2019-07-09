@@ -32,20 +32,21 @@ void Util::readFile(std::string _dir){
     inputStream.open(_dir,std::ios::in);
 
     /* --- Manipulate data  --- */
+    // Ignore first line of file (Contains Headers) 
+    std::string str;
+    // getline(inputStream)
     while(!inputStream.eof()){
         std::string name,town,stadium;
         getline(inputStream,name,',');
         getline(inputStream,town,',');
-        getline(inputStream,stadium,',');
+        getline(inputStream,stadium,'\n');
 
         Team t;
         t.name = name;
         t.town = town;
         t.stadium = stadium;
-
         teams.push_back(t);
     }
-
     // Close target file
     inputStream.close();
 }
@@ -61,9 +62,10 @@ void Util::writeFile(std::string _dir){
 }
 
 void Util::printTeams(){
-    for(int i = 0; i < teams.size(); i++){
-        std::cout<<teams.at(i).name<<"-";
-        std::cout<<teams.at(i).town<<"-";
+     std::cout<<teams.at(1).town<<",";
+    for(int i = 1; i < teams.size(); i++){
+        std::cout<<teams.at(i).name<<",";
+        std::cout<<teams.at(i).town<<",";
         std::cout<<teams.at(i).stadium<<std::endl;
     }
 }

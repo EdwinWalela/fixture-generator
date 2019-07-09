@@ -10,6 +10,5 @@ int main(){
 
     util.readFile("input.csv");
     util.printTeams();
-    
     return 0;
 }
