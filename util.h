@@ -12,29 +12,44 @@ struct Team
     std::string stadium;
 };
 
+struct Match
+{
+    Team home;
+    Team away;
+    int leg;
+};
+
+struct Weekend
+{
+    Match matches[2];
+};
 
 class Util{
     private:
     std::ifstream inputStream; 
     std::ofstream outputStream;
-
-    std::vector<Team> teams; // List of all teams;  
+    std::vector<Team> teams; // List of all teams
+    std::vector<Match> matches; // List of all mathces (90)
+    std::vector<Weekend> weekendGames; // List of all fixtures (45)
 
     public:
+    // Methods
     void readFile(std::string);
     void writeFile(std::string);
     void printTeams();
+    void createMatches();
+    void displayMatches();
+    void createWeekendGames();
+
 };
 
 // Read input from file
 void Util::readFile(std::string _dir){
     // Open target file
     inputStream.open(_dir,std::ios::in);
-
-    /* --- Manipulate data  --- */
-    // Ignore first line of file (Contains Headers) 
     std::string str;
-    // getline(inputStream)
+    getline(inputStream,str,'\n');
+    /* --- Manipulate data  --- */
     while(!inputStream.eof()){
         std::string name,town,stadium;
         getline(inputStream,name,',');
@@ -61,11 +76,52 @@ void Util::writeFile(std::string _dir){
     outputStream.close();
 }
 
+// Print list of teams on console
 void Util::printTeams(){
-     std::cout<<teams.at(1).town<<",";
-    for(int i = 1; i < teams.size(); i++){
+    for(int i = 0; i < teams.size(); i++){
         std::cout<<teams.at(i).name<<",";
         std::cout<<teams.at(i).town<<",";
         std::cout<<teams.at(i).stadium<<std::endl;
     }
 }
+
+void Util::createMatches(){
+    Match derby;
+    for(int i = 0; i < teams.size(); i++){
+        Team currentTeam = teams.at(i); // Hold team in a variable
+        // Iterate through all teams
+        for(int j = 0; j < teams.size(); j++){
+            // If the teams are the same continue iterating
+            if(currentTeam.name == teams.at(j).name){
+                continue;
+            }else
+            // If teams are from same town, hold the teams in a temporary derby variable
+            if(currentTeam.town == teams.at(j).town){
+                derby.home = currentTeam;
+                derby.away = teams.at(j);
+                derby.leg = 1;
+            }else{
+                Match match;
+                match.home = currentTeam;
+                match.away = teams.at(j);
+                match.leg = 1;
+                matches.push_back(match);
+            }
+        }
+        // Add derby match after the current team has already played with all other teams
+        matches.push_back(derby);
+    }
+}
+
+void Util::displayMatches(){
+    for(int i = 0; i < matches.size(); i++){
+        std::cout<<"\n--------------Weekend #"<<i+1<<"--------------\n";
+        std::cout<<matches.at(i).home.name<<" vs "<<matches.at(i).away.name;
+        std::cout<<"\n---------------------------------------\n";
+    }
+}
+
+void Util::createWeekendGames(){
+    
+}
+

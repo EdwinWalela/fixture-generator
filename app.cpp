@@ -9,6 +9,8 @@ int main(){
     Util util;
 
     util.readFile("input.csv");
-    util.printTeams();
+    util.createMatches();
+    util.displayMatches();
+    
     return 0;
 }
