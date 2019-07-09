@@ -10,7 +10,8 @@ int main(){
 
     util.readFile("input.csv");
     util.createMatches();
-    util.displayMatches();
+    util.createWeekendGames();
+    util.displayFixtures();
     
     return 0;
 }

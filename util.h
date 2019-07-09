@@ -40,6 +40,7 @@ class Util{
     void createMatches();
     void displayMatches();
     void createWeekendGames();
+    void displayFixtures();
 
 };
 
@@ -122,6 +123,29 @@ void Util::displayMatches(){
 }
 
 void Util::createWeekendGames(){
-    
+    for(int i = 0; i < matches.size()-1; i+=2){
+        Weekend weekend;
+        weekend.matches[0] = matches.at(i);
+        weekend.matches[1] = matches.at(i+1);
+        weekendGames.push_back(weekend);
+    }
 }
+
+void Util::displayFixtures(){
+    for(int i = 0; i < weekendGames.size(); i++){
+        std::cout<<"|------------ Week #"<<i+1<<" ------------\n\n";
+        for(int j = 0; j < 2; j++){
+            std::cout<<"| ";
+            std::cout<<weekendGames.at(i).matches[j].home.name;
+            std::cout<<" vs ";
+            std::cout<<weekendGames.at(i).matches[j].away.name;
+            std::cout<<"\n| Stadium: ";
+            std::cout<<weekendGames.at(i).matches[j].home.stadium<<std::endl;
+            std::cout<<"\n";
+        }
+        
+        std::cout<<"|--------------------------------\n\n";
+    }
+}
+
 
