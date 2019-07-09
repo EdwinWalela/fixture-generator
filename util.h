@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <stdlib.h> // srand, rand
+#include <time.h> // time
 
 struct Team
 {
@@ -41,6 +43,7 @@ class Util{
     void displayMatches();
     void createWeekendGames();
     void displayFixtures();
+    void shuffleTeams();
 
 };
 
@@ -83,6 +86,19 @@ void Util::printTeams(){
         std::cout<<teams.at(i).name<<",";
         std::cout<<teams.at(i).town<<",";
         std::cout<<teams.at(i).stadium<<std::endl;
+    }
+}
+
+void Util::shuffleTeams(){
+    srand(time(NULL)); // Initialize random seed
+    for(int i = teams.size()-1; i > 0; i--){
+        // Generate random number between 0 and i
+        int randomIndex = rand() % i + 0;
+        if(randomIndex == i){
+            continue;
+        }else{
+            std::swap(teams.at(i),teams.at(randomIndex));
+        }
     }
 }
 
@@ -147,5 +163,6 @@ void Util::displayFixtures(){
         std::cout<<"|--------------------------------\n\n";
     }
 }
+
 
 
