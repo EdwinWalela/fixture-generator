@@ -43,7 +43,7 @@ class Util{
     void displayMatches();
     void createWeekendGames();
     void displayFixtures();
-    void shuffleTeams();
+    void shuffleMatches();
 
 };
 
@@ -89,19 +89,6 @@ void Util::printTeams(){
     }
 }
 
-void Util::shuffleTeams(){
-    srand(time(NULL)); // Initialize random seed
-    for(int i = teams.size()-1; i > 0; i--){
-        // Generate random number between 0 and i
-        int randomIndex = rand() % i + 0;
-        if(randomIndex == i){
-            continue;
-        }else{
-            std::swap(teams.at(i),teams.at(randomIndex));
-        }
-    }
-}
-
 void Util::createMatches(){
     Match derby;
     for(int i = 0; i < teams.size(); i++){
@@ -132,7 +119,7 @@ void Util::createMatches(){
 
 void Util::displayMatches(){
     for(int i = 0; i < matches.size(); i++){
-        std::cout<<"\n--------------Weekend #"<<i+1<<"--------------\n";
+        std::cout<<"\n--------------match #"<<i+1<<"--------------\n";
         std::cout<<matches.at(i).home.name<<" vs "<<matches.at(i).away.name;
         std::cout<<"\n---------------------------------------\n";
     }
@@ -146,6 +133,21 @@ void Util::createWeekendGames(){
         weekendGames.push_back(weekend);
     }
 }
+
+
+void Util::shuffleMatches(){
+    srand(time(NULL)); // Initialize random seed
+    for(int i = matches.size()-1; i > 0; i--){
+        // Generate random number between 0 and i
+        int randomIndex = rand() % i + 0;
+        if(randomIndex == i){
+            continue;
+        }else{
+            std::swap(matches.at(i),matches.at(randomIndex));
+        }
+    }
+}
+
 
 void Util::displayFixtures(){
     for(int i = 0; i < weekendGames.size(); i++){

@@ -10,10 +10,9 @@ int main(){
     
     util.readFile("input.csv");
     cout<<endl<<endl<<endl;
-    util.shuffleTeams();
     util.createMatches();
-    util.printTeams();
-    // util.createWeekendGames();
+    util.shuffleMatches();
+    util.createWeekendGames();
     util.displayFixtures();
     
     return 0;
