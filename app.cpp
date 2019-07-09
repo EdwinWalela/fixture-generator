@@ -8,12 +8,10 @@ using namespace std;
 int main(){
     Util util;
     
-    util.readFile("input.csv");
-    cout<<endl<<endl<<endl;
-    util.createMatches();
-    util.shuffleMatches();
-    util.createWeekendGames();
-    util.displayFixtures();
+    util.readFile("input.csv"); //Reads teams from input
+    util.createMatches(); // Pairs teams into a match
+    util.createWeekendGames(); // Pairs matches ( 2 matches per weekend)
+    util.displayFixtures(); // Display Final Result
     
     return 0;
 }

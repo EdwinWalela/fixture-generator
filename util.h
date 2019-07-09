@@ -126,6 +126,7 @@ void Util::displayMatches(){
 }
 
 void Util::createWeekendGames(){
+    shuffleMatches();
     for(int i = 0; i < matches.size()-1; i+=2){
         Weekend weekend;
         weekend.matches[0] = matches.at(i);
@@ -133,7 +134,6 @@ void Util::createWeekendGames(){
         weekendGames.push_back(weekend);
     }
 }
-
 
 void Util::shuffleMatches(){
     srand(time(NULL)); // Initialize random seed
@@ -147,7 +147,6 @@ void Util::shuffleMatches(){
         }
     }
 }
-
 
 void Util::displayFixtures(){
     for(int i = 0; i < weekendGames.size(); i++){
