@@ -38,16 +38,21 @@ int main(){
         switch (choice)
         {
             case 1: // Read file
-                cout<<"- \n- Enter file name (include extension e.g file.csv)\n- \n- ";
-                cin>>file; // Input file directory
-                util.readFile(file); //Reads teams from input
+            // Prevent file double reading
+                if(util.getTeamCount() <= 0){
+                    cout<<"- \n- Enter file name (include extension e.g file.csv)\n- \n- ";
+                    cin>>file; // Input file directory
+                    util.readFile(file); //Reads teams from input
+                }
                 break;
             case 2: // Create Fixtures
-                util.createMatches(); // Pairs teams into a match
-                util.shuffleMatches();  // Shuffle the generated matches (Fisher-Yates Algorithm)
-                util.sortMatches(); // Ensures second legs matches come after all the first legs have been played (Bubble Sort)
-                util.createWeekendGames(); // Pairs matches (2 matches per weekend)
-               
+            // Prevent multiple generation of fixures
+                if(util.getFixturesCount() <= 0){
+                    util.createMatches(); // Pairs teams into a match
+                    util.shuffleMatches();  // Shuffle the generated matches (Fisher-Yates Algorithm)
+                    util.sortMatches(); // Ensures second legs matches come after all the first legs have been played (Bubble Sort)
+                    util.createWeekendGames(); // Pairs matches (2 matches per weekend)
+                }
                 break;
             case 3: // Generate Report
                 cout<<"- \n- Enter output file name (or 0 to use default output.csv file)\n- \n- ";
