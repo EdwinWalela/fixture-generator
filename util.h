@@ -49,6 +49,8 @@ class Util{
     void displayFixtures();
     void displayMatches();
     void printTeams();
+    int getFixturesCount();
+    int getTeamCount();
 
 };
 
@@ -76,6 +78,9 @@ void Util::readFile(std::string _dir){
 }
 // Write output to file
 void Util::writeFile(std::string _dir){
+    if(_dir.length()<2){
+        _dir = "output.csv";
+    }
     // Open target file
     outputStream.open(_dir,std::ios::trunc);
     outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
@@ -218,4 +223,12 @@ void Util::sortMatches(){
             }
         }
     }
+}
+
+int Util::getFixturesCount(){
+    return weekendGames.size();
+}
+
+int Util::getTeamCount(){
+    return teams.size();
 }
