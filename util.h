@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 #include <iostream>
 #include <stdlib.h> // srand, rand
 #include <time.h> // time
@@ -18,6 +19,7 @@ struct Match
 {
     Team home;
     Team away;
+    bool derby;
     int leg;
 };
 
@@ -33,17 +35,20 @@ class Util{
     std::vector<Team> teams; // List of all teams
     std::vector<Match> matches; // List of all mathces (90)
     std::vector<Weekend> weekendGames; // List of all fixtures (45)
+    bool havePlayedBefore(Team a, Team b);
 
     public:
-    // Methods
     void readFile(std::string);
     void writeFile(std::string);
-    void printTeams();
+
     void createMatches();
-    void displayMatches();
     void createWeekendGames();
-    void displayFixtures();
     void shuffleMatches();
+    void sortMatches();
+
+    void displayFixtures();
+    void displayMatches();
+    void printTeams();
 
 };
 
@@ -69,7 +74,31 @@ void Util::readFile(std::string _dir){
     // Close target file
     inputStream.close();
 }
+// Write output to file
+void Util::writeFile(std::string _dir){
+    // Open target file
+    outputStream.open(_dir,std::ios::trunc);
+    outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
+    /* --- Manipulate data --- */
+    for(int i = 0; i < weekendGames.size(); i++){
+        for(int j = 0; j < 2; j++){
+            std::string homeName,awayName,stadium,town;
+            std::string derby = weekendGames.at(i).matches[j].derby ? "Derby" : "-";
+            int leg;
+            // Extract fields from list
+            homeName = weekendGames.at(i).matches[j].home.name;
+            awayName = weekendGames.at(i).matches[j].away.name;
+            stadium = weekendGames.at(i).matches[j].home.stadium;
+            town = weekendGames.at(i).matches[j].home.town;
+            leg = weekendGames.at(i).matches[j].leg;
+            
+            // Write values to file
+            outputStream<<derby<<","<<i+1<<","<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+        }
+    }
 
+    outputStream.close();
+}
 // Print list of teams on console
 void Util::printTeams(){
     for(int i = 0; i < teams.size(); i++){
@@ -78,7 +107,7 @@ void Util::printTeams(){
         std::cout<<teams.at(i).stadium<<std::endl;
     }
 }
-
+// Pairs teams into a match
 void Util::createMatches(){
     Match derby;
     for(int i = 0; i < teams.size(); i++){
@@ -93,12 +122,23 @@ void Util::createMatches(){
             if(currentTeam.town == teams.at(j).town){
                 derby.home = currentTeam;
                 derby.away = teams.at(j);
-                derby.leg = 1;
+                if(havePlayedBefore(currentTeam,teams.at(j))){
+                    derby.leg = 1;
+                }else{
+                    derby.leg = 2;
+                }
+                derby.derby = true;
             }else{
                 Match match;
                 match.home = currentTeam;
                 match.away = teams.at(j);
-                match.leg = 1;
+                // Go through all matches checking if both teams have played before
+                if(havePlayedBefore(currentTeam,teams.at(j))){
+                    match.leg = 1;
+                }else{
+                    match.leg = 2;
+                }
+                match.derby = false;
                 matches.push_back(match);
             }
         }
@@ -106,7 +146,7 @@ void Util::createMatches(){
         matches.push_back(derby);
     }
 }
-
+// Print matches to std::cout
 void Util::displayMatches(){
     for(int i = 0; i < matches.size(); i++){
         std::cout<<"\n--------------match #"<<i+1<<"--------------\n";
@@ -114,9 +154,8 @@ void Util::displayMatches(){
         std::cout<<"\n---------------------------------------\n";
     }
 }
-
+// Pairs matches ( 2 matches per weekend)
 void Util::createWeekendGames(){
-    shuffleMatches();
     for(int i = 0; i < matches.size()-1; i+=2){
         Weekend weekend;
         weekend.matches[0] = matches.at(i);
@@ -124,20 +163,20 @@ void Util::createWeekendGames(){
         weekendGames.push_back(weekend);
     }
 }
-
+// Shuffle the generated matches (Fisher-Yates Algorithm)
 void Util::shuffleMatches(){
     srand(time(NULL)); // Initialize random seed
     for(int i = matches.size()-1; i > 0; i--){
         // Generate random number between 0 and i
         int randomIndex = rand() % i + 0;
-        if(randomIndex == i){
+        if(randomIndex == i || matches.at(i).derby){
             continue;
         }else{
             std::swap(matches.at(i),matches.at(randomIndex));
         }
     }
 }
-
+// Print Weekend games to std::cout
 void Util::displayFixtures(){
     for(int i = 0; i < weekendGames.size(); i++){
         std::cout<<"|------------ Week #"<<i+1<<" ------------\n\n";
@@ -154,27 +193,29 @@ void Util::displayFixtures(){
         std::cout<<"|--------------------------------\n\n";
     }
 }
-
-// Write output to file
-void Util::writeFile(std::string _dir){
-    // Open target file
-    outputStream.open(_dir,std::ios::trunc);
-    outputStream<<"Leg,Home,Away,Town,Stadium\n";
-    /* --- Manipulate data --- */
-    for(int i = 0; i < weekendGames.size(); i++){
-        for(int j = 0; j < 2; j++){
-            std::string homeName,awayName,stadium,town;
-            int leg;
-            // Extract fields from list
-            homeName = weekendGames.at(i).matches[j].home.name;
-            awayName = weekendGames.at(i).matches[j].away.name;
-            stadium = weekendGames.at(i).matches[j].home.stadium;
-            town = weekendGames.at(i).matches[j].home.town;
-            leg = weekendGames.at(i).matches[j].leg;
-            // Write values to file
-            outputStream<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+// Check if teams have played each other before 
+bool Util::havePlayedBefore(Team a,Team b){
+    // Go through all matches
+    for(int i = 0; i < matches.size(); i++){
+        Match currentMatch = matches.at(i);
+        // check if a b or b a exists 
+        if(
+            (currentMatch.home.name == a.name && currentMatch.away.name == b.name)
+            ||
+            (currentMatch.home.name == b.name && currentMatch.away.name == a.name)
+        ){
+            return true;
         }
     }
-
-    outputStream.close();
+    return false;
+}
+ // Ensures second legs matches come after all the first legs have been played (Bubble Sort)
+void Util::sortMatches(){
+    for(int i = 0; i < matches.size(); i++){
+        for(int j = 0; j < matches.size() - i - 1; j++){
+            if(matches.at(j).leg > matches.at(j+1).leg){
+                std::swap(matches.at(j),matches.at(j+1));
+            }
+        }
+    }
 }
