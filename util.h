@@ -70,16 +70,6 @@ void Util::readFile(std::string _dir){
     inputStream.close();
 }
 
-// Write output to file
-void Util::writeFile(std::string _dir){
-    // Open target file
-    outputStream.open(_dir,std::ios::app);
-
-    /* --- Manipulate data --- */
-
-    outputStream.close();
-}
-
 // Print list of teams on console
 void Util::printTeams(){
     for(int i = 0; i < teams.size(); i++){
@@ -165,5 +155,26 @@ void Util::displayFixtures(){
     }
 }
 
+// Write output to file
+void Util::writeFile(std::string _dir){
+    // Open target file
+    outputStream.open(_dir,std::ios::trunc);
+    outputStream<<"Leg,Home,Away,Town,Stadium\n";
+    /* --- Manipulate data --- */
+    for(int i = 0; i < weekendGames.size(); i++){
+        for(int j = 0; j < 2; j++){
+            std::string homeName,awayName,stadium,town;
+            int leg;
+            // Extract fields from list
+            homeName = weekendGames.at(i).matches[j].home.name;
+            awayName = weekendGames.at(i).matches[j].away.name;
+            stadium = weekendGames.at(i).matches[j].home.stadium;
+            town = weekendGames.at(i).matches[j].home.town;
+            leg = weekendGames.at(i).matches[j].leg;
+            // Write values to file
+            outputStream<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+        }
+    }
 
-
+    outputStream.close();
+}

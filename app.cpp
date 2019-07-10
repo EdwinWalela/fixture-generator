@@ -11,7 +11,7 @@ int main(){
     util.readFile("input.csv"); //Reads teams from input
     util.createMatches(); // Pairs teams into a match
     util.createWeekendGames(); // Pairs matches ( 2 matches per weekend)
-    util.displayFixtures(); // Display Final Result
-    
+    // util.displayFixtures(); // Display Final Result
+    util.writeFile("output.csv");
     return 0;
 }
