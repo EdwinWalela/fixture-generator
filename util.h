@@ -30,6 +30,7 @@ struct Weekend
 
 class Util{
     private:
+    bool writtenToFile = false;
     std::ifstream inputStream; 
     std::ofstream outputStream;
     std::vector<Team> teams; // List of all teams
@@ -81,28 +82,31 @@ void Util::writeFile(std::string _dir){
     if(_dir.length()<2){
         _dir = "output.csv";
     }
-    // Open target file
-    outputStream.open(_dir,std::ios::trunc);
-    outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
-    /* --- Manipulate data --- */
-    for(int i = 0; i < weekendGames.size(); i++){
-        for(int j = 0; j < 2; j++){
-            std::string homeName,awayName,stadium,town;
-            std::string derby = weekendGames.at(i).matches[j].derby ? "Derby" : "-";
-            int leg;
-            // Extract fields from list
-            homeName = weekendGames.at(i).matches[j].home.name;
-            awayName = weekendGames.at(i).matches[j].away.name;
-            stadium = weekendGames.at(i).matches[j].home.stadium;
-            town = weekendGames.at(i).matches[j].home.town;
-            leg = weekendGames.at(i).matches[j].leg;
-            
-            // Write values to file
-            outputStream<<derby<<","<<i+1<<","<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+    if(!writtenToFile){
+        writtenToFile = true;
+        // Open target file
+        outputStream.open(_dir,std::ios::trunc);
+        outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
+        /* --- Manipulate data --- */
+        for(int i = 0; i < weekendGames.size(); i++){
+            for(int j = 0; j < 2; j++){
+                std::string homeName,awayName,stadium,town;
+                std::string derby = weekendGames.at(i).matches[j].derby ? "Derby" : "-";
+                int leg;
+                // Extract fields from list
+                homeName = weekendGames.at(i).matches[j].home.name;
+                awayName = weekendGames.at(i).matches[j].away.name;
+                stadium = weekendGames.at(i).matches[j].home.stadium;
+                town = weekendGames.at(i).matches[j].home.town;
+                leg = weekendGames.at(i).matches[j].leg;
+                
+                // Write values to file
+                outputStream<<derby<<","<<i+1<<","<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+            }
         }
-    }
 
-    outputStream.close();
+        outputStream.close();
+    }
 }
 // Print list of teams on console
 void Util::printTeams(){
