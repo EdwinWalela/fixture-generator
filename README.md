@@ -1,6 +1,13 @@
 # Fixtures Generator Algorithim
 Algorithm to generate football matches fixtures (Data Structures and Algorithms Term Project)
 
+## Quick Links
+1. [Problem](#problem)
+2. [Solution](#solution)
+3. [Data Types](#data-types)
+4. [Util Class](#util-class)
+5. [Aysmptotic Analysis](#aysmptotic-analysis)
+
 ## Problem
 In ABC premier league, there are 10 teams. You have been hired to build a program that will generate
 fixtures for these teams based on the following given rules.
