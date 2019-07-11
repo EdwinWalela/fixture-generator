@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 void instructions(Util &util){
     cout<<"--------------------------------------------------------------------------\n";
     cout<<"-----                                                                -----\n";
@@ -26,6 +25,19 @@ void instructions(Util &util){
     cout<<"-                                                                        -\n";
     cout<<"-                                                                        -\n";
     cout<<"- Enter Choice : ";
+}
+
+void documentation(){
+     cout<<"--------------------------------------------------------------------------\n";
+    cout<<"-----                                                                -----\n";
+    cout<<"---                         Fixtures Generator                         ---\n";
+    cout<<"--                                                                      --\n";
+    cout<<"---                            Mini-Project                            ---\n";
+    cout<<"-----                                                                -----\n";
+    cout<<"-----        https://github.com/EdwinWalela/fixture-generator        -----\n";
+    cout<<"-----                                                                -----\n";
+    cout<<"--------------------------------------------------------------------------\n";
+    cout<<"\n\n";
 }
 
 int main(){
@@ -60,6 +72,8 @@ int main(){
                 util.writeFile(file); // Write final result (fixtures) to file
                 break;
             case 4: // Documentation
+                system("cls");
+                documentation();
                 break;    
             default:
                 break;

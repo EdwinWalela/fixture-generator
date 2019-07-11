@@ -30,7 +30,6 @@ struct Weekend
 
 class Util{
     private:
-    bool writtenToFile = false;
     std::ifstream inputStream; 
     std::ofstream outputStream;
     std::vector<Team> teams; // List of all teams
@@ -82,8 +81,6 @@ void Util::writeFile(std::string _dir){
     if(_dir.length()<2){
         _dir = "output.csv";
     }
-    if(!writtenToFile){
-        writtenToFile = true;
         // Open target file
         outputStream.open(_dir,std::ios::trunc);
         outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
@@ -106,7 +103,6 @@ void Util::writeFile(std::string _dir){
         }
 
         outputStream.close();
-    }
 }
 // Print list of teams on console
 void Util::printTeams(){
