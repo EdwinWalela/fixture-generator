@@ -78,10 +78,11 @@ struct Weekend
 ```
 
 ## Util Class
-A utility class which defines the following methods
+A utility class which defines the following member methods
+
 ```cpp
  private:
-  bool havePlayedBefore(Team a, Team b); // Check is the teams have played with each other before
+   bool havePlayedBefore(Team a, Team b); // Check is the teams have played with each other before
 
  public:
     void readFile(std::string); // Opens a csv file, reads its contents as it creates the teams
@@ -97,6 +98,14 @@ A utility class which defines the following methods
     void printTeams(); // Display Teams read from file
     int getFixturesCount(); // Returns number of fixtures generated
     int getTeamCount(); // Returns number of teams created
+```
+
+And the following member variables
+
+```cpp
+    std::vector<Team> teams; // List of all teams
+    std::vector<Match> matches; // List of all mathces (90)
+    std::vector<Weekend> weekendGames; // List of all fixtures (45)
 ```
 
 
