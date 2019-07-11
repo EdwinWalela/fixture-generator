@@ -83,7 +83,7 @@ void Util::writeFile(std::string _dir){
     }
         // Open target file
         outputStream.open(_dir,std::ios::trunc);
-        outputStream<<"Derby,Game Week,Leg,Home,Away,Town,Stadium\n";
+        outputStream<<"Derby,Game Week,Leg,Home,-,Away,Town,Stadium\n";
         /* --- Manipulate data --- */
         for(int i = 0; i < weekendGames.size(); i++){
             for(int j = 0; j < 2; j++){
@@ -98,7 +98,7 @@ void Util::writeFile(std::string _dir){
                 leg = weekendGames.at(i).matches[j].leg;
                 
                 // Write values to file
-                outputStream<<derby<<","<<i+1<<","<<leg<<","<<homeName<<","<<awayName<<","<<town<<","<<stadium<<"\n";
+                outputStream<<derby<<","<<i+1<<","<<leg<<","<<homeName<<",vs,"<<awayName<<","<<town<<","<<stadium<<"\n";
             }
         }
 
