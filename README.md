@@ -38,7 +38,7 @@ Display the final table in a CSV file (and on screen) to show the generated fixt
 
 ## Solution
 
-1. Read values from input file (Comma Separated Values) while creating `Teams`
+1. Read values from input file (Comma Separated Values) and create `Teams`
 
 2. Pair `Teams` into `Matches`
 
